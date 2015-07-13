@@ -171,7 +171,7 @@ echo "-----> Installing phantomjs."
 phantom_url="https://packagecloud.io/armando/phantomjs/packages/ubuntu/trusty/phantomjs_2.0.0.dsc/files/phantomjs_2.0.0.tar.gz/download"
 phantom_file="phantomjs-2.0.0/phantomjs_2/bin/phantomjs"
 curl -L -sS $phantom_url -o - | tar -zxf - -C $heroku_dir $phantom_file --strip 1
-chmod +x $heroku_dir/phantomjs_2/bin/*
+chmod 777 $heroku_dir/phantomjs_2/bin/*
 
 ####### Create the runtime environment (profile.d)
 
