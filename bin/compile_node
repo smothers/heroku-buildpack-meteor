@@ -188,7 +188,7 @@ echo "export NODE_HOME=\"$build_dir/.heroku/node\"" >> $bp_dir/export
 
 ####### Update Phantomjs permissions
 
-head "Make phantomjs executable"
+info "Make phantomjs executable"
 chmod 555 $heroku_dir/phantomjs_2/bin/phantomjs
 
 ####### Clean up
