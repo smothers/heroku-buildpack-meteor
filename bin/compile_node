@@ -166,12 +166,11 @@ fi
 
 ####### Install PhantomJS 2.0
 
-echo "-----> Installing phantomjs."
+head "Installing phantomjs."
 # Just extract the one file (the binary) and not all the examples/readme's/etc.
 phantom_url="https://packagecloud.io/armando/phantomjs/packages/ubuntu/trusty/phantomjs_2.0.0.dsc/files/phantomjs_2.0.0.tar.gz/download"
 phantom_file="phantomjs-2.0.0/phantomjs_2/bin/phantomjs"
 curl -L -sS $phantom_url -o - | tar -zxf - -C $heroku_dir $phantom_file --strip 1
-chmod 777 $heroku_dir/phantomjs_2/bin/*
 
 ####### Create the runtime environment (profile.d)
 
@@ -186,6 +185,11 @@ echo "export NODE_HOME=\"\$HOME/.heroku/node\"" >> $build_dir/.profile.d/nodejs.
 info "Exporting binary paths"
 echo "export PATH=\"$build_dir/.heroku/node/bin:$build_dir/.heroku/phantomjs_2/bin:$build_dir/node_modules/.bin:\$PATH\"" > $bp_dir/export
 echo "export NODE_HOME=\"$build_dir/.heroku/node\"" >> $bp_dir/export
+
+####### Update Phantomjs permissions
+
+head "Make phantomjs executable"
+chmod 555 $heroku_dir/phantomjs_2/bin/phantomjs
 
 ####### Clean up
 
