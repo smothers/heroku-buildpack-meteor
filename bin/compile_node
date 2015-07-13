@@ -164,6 +164,15 @@ elif [ "$start_method" == "server.js" ]; then
   echo "web: node server.js" > $build_dir/Procfile
 fi
 
+####### Install PhantomJS 2.0
+
+echo "-----> Installing phantomjs."
+# Just extract the one file (the binary) and not all the examples/readme's/etc.
+phantom_url="https://packagecloud.io/armando/phantomjs/packages/ubuntu/trusty/phantomjs_2.0.0.dsc/files/phantomjs_2.0.0.tar.gz/download"
+phantom_file="phantomjs-2.0.0/phantomjs_2/bin/phantomjs"
+curl -L -sS $phantom_url -o - | tar -zxf - -C $heroku_dir $phantom_file --strip 1
+chmod +x $heroku_dir/phantomjs_2/bin/*
+
 ####### Create the runtime environment (profile.d)
 
 head "Finalizing build"
@@ -171,11 +180,11 @@ head "Finalizing build"
 # Runtime & Multi-buildpack exports
 info "Creating runtime environment"
 mkdir -p $build_dir/.profile.d
-echo "export PATH=\"\$HOME/.heroku/node/bin:\$HOME/bin:\$HOME/node_modules/.bin:\$PATH\"" > $build_dir/.profile.d/nodejs.sh
+echo "export PATH=\"\$HOME/.heroku/node/bin:\$HOME/.heroku/phantomjs_2/bin:\$HOME/bin:\$HOME/node_modules/.bin:\$PATH\"" > $build_dir/.profile.d/nodejs.sh
 echo "export NODE_HOME=\"\$HOME/.heroku/node\"" >> $build_dir/.profile.d/nodejs.sh
 
 info "Exporting binary paths"
-echo "export PATH=\"$build_dir/.heroku/node/bin:$build_dir/node_modules/.bin:\$PATH\"" > $bp_dir/export
+echo "export PATH=\"$build_dir/.heroku/node/bin:$build_dir/.heroku/phantomjs_2/bin:$build_dir/node_modules/.bin:\$PATH\"" > $bp_dir/export
 echo "export NODE_HOME=\"$build_dir/.heroku/node\"" >> $bp_dir/export
 
 ####### Clean up
